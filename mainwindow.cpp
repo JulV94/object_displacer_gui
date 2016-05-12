@@ -192,7 +192,7 @@ void MainWindow::calculateInverseKinematic()
         // copy to file
         for (int j=0; j<4; j++)
         {
-            f << outputAngles[i][j] << ", ";
+            f << outputAngles[i][j] << " ";
         }
         f << outputAngles[i][4] << endl;
     }
