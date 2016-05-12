@@ -6,86 +6,24 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>399</width>
+    <width>831</width>
     <height>407</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Robot launcher GUI</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout">
+  <layout class="QGridLayout" name="gridLayout_2">
    <item row="0" column="0">
-    <layout class="QVBoxLayout" name="verticalLayout">
-     <item>
-      <layout class="QHBoxLayout" name="horizontalLayout">
-       <item>
-        <widget class="QLabel" name="iplabel">
-         <property name="text">
-          <string>Robot IP:port</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QLineEdit" name="ipLineEdit">
-         <property name="minimumSize">
-          <size>
-           <width>150</width>
-           <height>0</height>
-          </size>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>150</width>
-           <height>16777215</height>
-          </size>
-         </property>
-         <property name="autoFillBackground">
-          <bool>false</bool>
-         </property>
-         <property name="styleSheet">
-          <string notr="true"/>
-         </property>
-         <property name="inputMask">
-          <string/>
-         </property>
-         <property name="text">
-          <string>192.168.1.220:11311</string>
-         </property>
-         <property name="clearButtonEnabled">
-          <bool>false</bool>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <spacer name="horizontalSpacer">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>40</width>
-           <height>20</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item>
-        <widget class="QPushButton" name="launchButton">
-         <property name="text">
-          <string>Launch</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </item>
-     <item>
+    <layout class="QGridLayout" name="gridLayout">
+     <item row="0" column="0">
       <widget class="QGroupBox" name="addPointGroupBox">
        <property name="title">
         <string>Add a point</string>
        </property>
-       <layout class="QGridLayout" name="gridLayout_4">
-        <item row="0" column="0">
-         <layout class="QGridLayout" name="gridLayout_3">
+       <layout class="QVBoxLayout" name="verticalLayout">
+        <item>
+         <layout class="QGridLayout" name="addPointInputLayout">
           <item row="0" column="1">
            <widget class="QDoubleSpinBox" name="xSpinBox">
             <property name="maximumSize">
@@ -94,17 +32,29 @@
               <height>16777215</height>
              </size>
             </property>
+            <property name="decimals">
+             <number>4</number>
+            </property>
+            <property name="minimum">
+             <double>-2.000000000000000</double>
+            </property>
+            <property name="maximum">
+             <double>2.000000000000000</double>
+            </property>
+            <property name="singleStep">
+             <double>0.001000000000000</double>
+            </property>
            </widget>
           </item>
           <item row="1" column="2">
-           <widget class="QLabel" name="angle2Label">
+           <widget class="QLabel" name="phiLabel">
             <property name="text">
              <string>φ</string>
             </property>
            </widget>
           </item>
           <item row="1" column="0">
-           <widget class="QLabel" name="angle1Label">
+           <widget class="QLabel" name="thetaLabel">
             <property name="text">
              <string>θ</string>
             </property>
@@ -131,7 +81,7 @@
            </widget>
           </item>
           <item row="0" column="2">
-           <widget class="QLabel" name="ylabel">
+           <widget class="QLabel" name="yLabel">
             <property name="text">
              <string>Y</string>
             </property>
@@ -159,6 +109,18 @@
               <height>16777215</height>
              </size>
             </property>
+            <property name="decimals">
+             <number>4</number>
+            </property>
+            <property name="minimum">
+             <double>-7.000000000000000</double>
+            </property>
+            <property name="maximum">
+             <double>7.000000000000000</double>
+            </property>
+            <property name="singleStep">
+             <double>0.001000000000000</double>
+            </property>
            </widget>
           </item>
           <item row="0" column="3">
@@ -168,6 +130,18 @@
               <width>75</width>
               <height>16777215</height>
              </size>
+            </property>
+            <property name="decimals">
+             <number>4</number>
+            </property>
+            <property name="minimum">
+             <double>-2.000000000000000</double>
+            </property>
+            <property name="maximum">
+             <double>2.000000000000000</double>
+            </property>
+            <property name="singleStep">
+             <double>0.001000000000000</double>
             </property>
            </widget>
           </item>
@@ -179,6 +153,18 @@
               <height>16777215</height>
              </size>
             </property>
+            <property name="decimals">
+             <number>4</number>
+            </property>
+            <property name="minimum">
+             <double>-7.000000000000000</double>
+            </property>
+            <property name="maximum">
+             <double>7.000000000000000</double>
+            </property>
+            <property name="singleStep">
+             <double>0.001000000000000</double>
+            </property>
            </widget>
           </item>
           <item row="0" column="5">
@@ -189,53 +175,162 @@
               <height>16777215</height>
              </size>
             </property>
+            <property name="decimals">
+             <number>4</number>
+            </property>
+            <property name="minimum">
+             <double>-2.000000000000000</double>
+            </property>
+            <property name="maximum">
+             <double>2.000000000000000</double>
+            </property>
+            <property name="singleStep">
+             <double>0.001000000000000</double>
+            </property>
            </widget>
           </item>
          </layout>
         </item>
+        <item>
+         <widget class="QTableWidget" name="pointList">
+          <property name="editTriggers">
+           <set>QAbstractItemView::DoubleClicked</set>
+          </property>
+          <attribute name="horizontalHeaderDefaultSectionSize">
+           <number>75</number>
+          </attribute>
+          <attribute name="horizontalHeaderMinimumSectionSize">
+           <number>75</number>
+          </attribute>
+          <column>
+           <property name="text">
+            <string>X</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Y</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Z</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>θ</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>φ</string>
+           </property>
+          </column>
+         </widget>
+        </item>
        </layout>
       </widget>
      </item>
-     <item>
-      <widget class="QTableWidget" name="pointList">
-       <attribute name="horizontalHeaderDefaultSectionSize">
-        <number>75</number>
-       </attribute>
-       <attribute name="horizontalHeaderMinimumSectionSize">
-        <number>75</number>
-       </attribute>
-       <column>
-        <property name="text">
-         <string>X</string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
-         <string>Y</string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
-         <string>Z</string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
-         <string>θ</string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
-         <string>φ</string>
-        </property>
-       </column>
+     <item row="1" column="0">
+      <widget class="QGroupBox" name="inverseKinGroupBox">
+       <property name="title">
+        <string>calculate Inverse Kinematic</string>
+       </property>
+       <layout class="QHBoxLayout" name="horizontalLayout_2">
+        <item>
+         <widget class="QPushButton" name="calculateButton">
+          <property name="text">
+           <string>Calculate</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QProgressBar" name="invKinProgressBar">
+          <property name="value">
+           <number>0</number>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </widget>
      </item>
-     <item>
-      <widget class="QTextEdit" name="consoleOutput">
-       <property name="textInteractionFlags">
-        <set>Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse</set>
+     <item row="0" column="1" rowspan="2">
+      <widget class="QGroupBox" name="robotControlGroupBox">
+       <property name="title">
+        <string>Control the robot</string>
        </property>
+       <layout class="QVBoxLayout" name="verticalLayout_4">
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout">
+          <item>
+           <widget class="QLabel" name="iplabel">
+            <property name="text">
+             <string>Robot IP:port</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="ipLineEdit">
+            <property name="minimumSize">
+             <size>
+              <width>150</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>150</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="autoFillBackground">
+             <bool>false</bool>
+            </property>
+            <property name="styleSheet">
+             <string notr="true"/>
+            </property>
+            <property name="inputMask">
+             <string/>
+            </property>
+            <property name="text">
+             <string>192.168.1.220:11311</string>
+            </property>
+            <property name="clearButtonEnabled">
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="horizontalSpacer">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QPushButton" name="launchButton">
+            <property name="text">
+             <string>Launch</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <widget class="QTextEdit" name="consoleOutput">
+          <property name="textInteractionFlags">
+           <set>Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse</set>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </widget>
      </item>
     </layout>

@@ -3,6 +3,13 @@
 
 #include <QWidget>
 #include <QProcess>
+#include <vector>
+#include <math.h>
+#include <iostream>
+#include <fstream>
+#include "constants.h"
+
+using namespace std;
 
 namespace Ui {
 class MainWindow;
@@ -23,12 +30,18 @@ private slots:
     void updateOutputStd();
     void processStarted();
     void processFinished(int exitCode, QProcess::ExitStatus exitStatus);
+    void processInverseKinematicRequest();
 
 private:
-    void updateWidgetsEnable();
+    void updateWidgetsEnableLaunch();
+    void updateWidgetsEnableCalculate();
+    void calculateInverseKinematic();
+    double getPointValue(int point, int coordinate);
+    double degToRad(double degreeAngle);
     Ui::MainWindow *ui;
     QProcess *process;
     bool isLaunched;
+    bool isCalculating;
     QColor *defaultConsoleColor;
     QColor *errorConsoleColor;
 };
