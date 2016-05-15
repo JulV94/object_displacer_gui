@@ -44,6 +44,7 @@ private:
     bool isCalculating;
     QColor *defaultConsoleColor;
     QColor *errorConsoleColor;
+    QString *resultFilePath;
 };
 
 #endif // MAINWINDOW_H

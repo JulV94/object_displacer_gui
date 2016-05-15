@@ -13,6 +13,7 @@ MainWindow::MainWindow(QWidget *parent) :
     defaultConsoleColor = new QColor("white");
     errorConsoleColor = new QColor("red");
     ui->consoleOutput->setTextColor(*defaultConsoleColor);
+    resultFilePath = new QString(QApplication::applicationDirPath()+"/results");
 
 
     connect(ui->addPointButton, SIGNAL(released()), this, SLOT(addPoint()));
@@ -38,8 +39,7 @@ void MainWindow::launch()
     {
         isLaunched=true;
         updateWidgetsEnableLaunch();
-        process->start("bash -c \"source /opt/ros/indigo/setup.bash && source ~/catkin_ws/devel/setup.bash && export ROS_MASTER_URI=http://"+ui->ipLineEdit->text()+" && export ROS_HOSTNAME=`hostname --ip-address` && rosrun object_displacer object_displacer"+/*Adding here the code for the points*/"\"");
-        //process->start("bash -c \"source /opt/ros/indigo/setup.bash && source ~/catkin_ws/devel/setup.bash && export ROS_MASTER_URI=http://"+ui->ipLineEdit->text()+" && export ROS_HOSTNAME=`hostname --ip-address` && echo $ROS_HOSTNAME && echo $ROS_MASTER_URI\"");
+        process->start("bash -c \"source /opt/ros/indigo/setup.bash && source ~/catkin_ws/devel/setup.bash && export ROS_MASTER_URI=http://"+ui->ipLineEdit->text()+" && export ROS_HOSTNAME=`hostname --ip-address` && rosrun object_displacer object_displacer "+*resultFilePath+"\"");
     }
 }
 
@@ -164,7 +164,7 @@ void MainWindow::calculateInverseKinematic()
     outputAngles.resize(ui->pointList->rowCount(), vector<double>(5, 0));
     double x3, z3, c3, s3;
     ofstream f;
-    f.open("results");
+    f.open(resultFilePath->toStdString().c_str());
     for (int i=0; i<ui->pointList->rowCount(); i++)
     {
         // theta 1
