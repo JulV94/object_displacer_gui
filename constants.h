@@ -1,12 +1,6 @@
 #ifndef CONSTANTS_H
 #define CONSTANTS_H
 
-#define INIT_ANGLE1     0.012
-#define INIT_ANGLE2     0.012
-#define INIT_ANGLE3     -0.158
-#define INIT_ANGLE4     0.023
-#define INIT_ANGLE5     0.111
-
 // Length of the joints
 #define L1              0.147
 #define L2              0.155

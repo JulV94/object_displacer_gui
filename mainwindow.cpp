@@ -212,22 +212,12 @@ void MainWindow::updateWidgetsEnableCalculate()
 void MainWindow::calculateInverseKinematic()
 {
     vector< vector<double> > outputAngles;
-    outputAngles.resize(ui->pointList->rowCount()/*+1*/, vector<double>(5, 0));
+    outputAngles.resize(ui->pointList->rowCount(), vector<double>(5, 0));
     double x3, z3, c3, s3;
     ofstream f;
     f.open(resultFilePath->toStdString().c_str());
     ui->resultPathLabel->setText("Saved in "+*resultFilePath);
-    /*outputAngles[0][0]=INIT_ANGLE1;
-    outputAngles[0][1]=INIT_ANGLE2;
-    outputAngles[0][2]=INIT_ANGLE3;
-    outputAngles[0][3]=INIT_ANGLE4;
-    outputAngles[0][4]=INIT_ANGLE5;
-    for (int j=0; j<4; j++)
-    {
-        f << outputAngles[0][j] << " ";
-    }
-    f << outputAngles[0][4] << endl;*/
-    for (int i=/*1*/0; i<ui->pointList->rowCount()/*+1*/; i++)
+    for (int i=0; i<ui->pointList->rowCount(); i++)
     {
         // theta 1
         outputAngles[i][0] = -atan2(getPointValue(i, 1), getPointValue(i, 0))+degToRad(THETA1_OFFSET) - PI;
