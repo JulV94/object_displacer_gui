@@ -41,7 +41,7 @@ void MainWindow::launch()
     {
         isLaunched=true;
         updateWidgetsEnableLaunch();
-        process->start("bash -c \"source /opt/ros/indigo/setup.bash && source ~/catkin_ws/devel/setup.bash && export ROS_MASTER_URI=http://"+ui->ipLineEdit->text()+" && export ROS_HOSTNAME=`hostname --ip-address` && rosrun object_displacer object_displacer "+*resultFilePath+"\"");
+        process->start("bash -c \"source /opt/ros/indigo/setup.bash && source ~/catkin_ws/devel/setup.bash && export ROS_MASTER_URI=http://"+ui->ipLineEdit->text()+" && export ROS_HOSTNAME=`hostname -I` && rosrun object_displacer object_displacer "+*resultFilePath+"\"");
     }
 }
 
