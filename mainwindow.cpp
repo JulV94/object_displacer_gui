@@ -68,7 +68,14 @@ void MainWindow::exportPoints()
         {
             f << getPointValue(i, j) << " ";
         }
-        f << getPointValue(i, 4) << endl;
+        if (i < ui->pointList->rowCount()-1)
+        {
+            f << getPointValue(i, 4) << endl;
+        }
+        else
+        {
+            f << getPointValue(i, 4);
+        }
     }
     f.close();
 }
@@ -255,7 +262,14 @@ void MainWindow::calculateInverseKinematic()
         {
             f << outputAngles[i][j] << " ";
         }
-        f << outputAngles[i][4] << endl;
+        if (i < ui->pointList->rowCount()-1)
+        {
+            f << outputAngles[i][4] << endl;
+        }
+        else
+        {
+            f << outputAngles[i][4];
+        }
     }
     f.close();
     // reset the window when finished
