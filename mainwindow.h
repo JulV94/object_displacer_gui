@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <QProcess>
+#include <QFileDialog>
 #include <vector>
 #include <math.h>
 #include <iostream>
@@ -26,6 +27,8 @@ public:
 private slots:
     void launch();
     void addPoint();
+    void exportPoints();
+    void importPoints();
     void updateOutputError();
     void updateOutputStd();
     void processStarted();

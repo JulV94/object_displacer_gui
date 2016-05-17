@@ -17,6 +17,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
 
     connect(ui->addPointButton, SIGNAL(released()), this, SLOT(addPoint()));
+    connect(ui->exportPointsButton, SIGNAL(released()), this, SLOT(exportPoints()));
+    connect(ui->importPointsButton, SIGNAL(released()), this, SLOT(importPoints()));
 
     connect(ui->calculateButton, SIGNAL(released()), this, SLOT(processInverseKinematicRequest()));
 
@@ -52,6 +54,48 @@ void MainWindow::addPoint()
     ui->pointList->setItem(currentRow, 2, new QTableWidgetItem(ui->zSpinBox->text()));
     ui->pointList->setItem(currentRow, 3, new QTableWidgetItem(ui->thetaSpinBox->text()));
     ui->pointList->setItem(currentRow, 4, new QTableWidgetItem(ui->phiSpinBox->text()));
+}
+
+void MainWindow::exportPoints()
+{
+    QString filename;
+    filename = QFileDialog::getSaveFileName(this, tr("Export Points"), NULL, NULL);
+    ofstream f;
+    f.open(filename.toStdString().c_str());
+    for (int i=0; i<ui->pointList->rowCount(); i++)
+    {
+        for (int j=0; j<4; j++)
+        {
+            f << getPointValue(i, j) << " ";
+        }
+        f << getPointValue(i, 4) << endl;
+    }
+    f.close();
+}
+
+void MainWindow::importPoints()
+{
+    QString filename;
+    string value;
+    int row=0;
+    filename = QFileDialog::getOpenFileName(this, tr("Import Points"), NULL, NULL);
+    ifstream f;
+    f.open(filename.toStdString().c_str());
+    if (f.is_open())
+    {
+        ui->pointList->clearContents();
+        while (!f.eof())
+        {
+            ui->pointList->setRowCount(row + 1);
+            for (int i=0; i<5; i++)
+            {
+                f >> value;
+                ui->pointList->setItem(row, i, new QTableWidgetItem(QString::fromStdString(value)));
+            }
+            row++;
+        }
+        f.close();
+    }
 }
 
 void MainWindow::updateOutputError()
@@ -161,14 +205,25 @@ void MainWindow::updateWidgetsEnableCalculate()
 void MainWindow::calculateInverseKinematic()
 {
     vector< vector<double> > outputAngles;
-    outputAngles.resize(ui->pointList->rowCount(), vector<double>(5, 0));
+    outputAngles.resize(ui->pointList->rowCount()/*+1*/, vector<double>(5, 0));
     double x3, z3, c3, s3;
     ofstream f;
     f.open(resultFilePath->toStdString().c_str());
-    for (int i=0; i<ui->pointList->rowCount(); i++)
+    ui->resultPathLabel->setText("Saved in "+*resultFilePath);
+    /*outputAngles[0][0]=INIT_ANGLE1;
+    outputAngles[0][1]=INIT_ANGLE2;
+    outputAngles[0][2]=INIT_ANGLE3;
+    outputAngles[0][3]=INIT_ANGLE4;
+    outputAngles[0][4]=INIT_ANGLE5;
+    for (int j=0; j<4; j++)
+    {
+        f << outputAngles[0][j] << " ";
+    }
+    f << outputAngles[0][4] << endl;*/
+    for (int i=/*1*/0; i<ui->pointList->rowCount()/*+1*/; i++)
     {
         // theta 1
-        outputAngles[i][0] = atan2(getPointValue(i, 1), getPointValue(i, 0))-degToRad(THETA1_OFFSET);
+        outputAngles[i][0] = -atan2(getPointValue(i, 1), getPointValue(i, 0))+degToRad(THETA1_OFFSET) - PI;
 
         x3 = sqrt(pow(getPointValue(i, 0), 2) + pow(getPointValue(i, 1), 2)) - L4*cos(getPointValue(i, 3)) - OFFSET;
         z3 = getPointValue(i, 2) - L4*sin(getPointValue(i, 3)) - L1;
@@ -180,13 +235,19 @@ void MainWindow::calculateInverseKinematic()
         outputAngles[i][2] = atan2(s3, c3) + PI/2 - degToRad(THETA3_OFFSET);
 
         // theta 2
-        outputAngles[i][1] = atan2(z3, x3) - atan2(L3*s3, L2+L3*c3) - PI/2 - degToRad(THETA2_OFFSET);
+        outputAngles[i][1] = atan2(z3, x3) - atan2(L3*s3, L2+L3*c3) - PI/2 - degToRad(THETA2_OFFSET) + 0.188;
 
         // theta 4
         outputAngles[i][3] = getPointValue(i, 3) - outputAngles[i][1] - outputAngles[i][2] - PI/2 - degToRad(THETA4_OFFSET);
 
         // theta 5
         outputAngles[i][4] = getPointValue(i, 4);
+
+        for (int j=0; j<5; j++)
+        {
+            outputAngles[i][j]= -outputAngles[i][j];
+        }
+
 
         ui->consoleOutput->append(QString::number(outputAngles[i][0])+" "+QString::number(outputAngles[i][1])+" "+QString::number(outputAngles[i][2])+" "+QString::number(outputAngles[i][3])+" "+QString::number(outputAngles[i][4])+" ");
         // copy to file

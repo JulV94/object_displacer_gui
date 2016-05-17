@@ -60,7 +60,7 @@
             </property>
            </widget>
           </item>
-          <item row="0" column="6">
+          <item row="0" column="7">
            <spacer name="horizontalSpacer_3">
             <property name="orientation">
              <enum>Qt::Horizontal</enum>
@@ -87,17 +87,17 @@
             </property>
            </widget>
           </item>
-          <item row="0" column="0">
-           <widget class="QLabel" name="xLabel">
-            <property name="text">
-             <string>X</string>
-            </property>
-           </widget>
-          </item>
           <item row="1" column="4" colspan="2">
            <widget class="QPushButton" name="addPointButton">
             <property name="text">
              <string>Add point</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="0">
+           <widget class="QLabel" name="xLabel">
+            <property name="text">
+             <string>X</string>
             </property>
            </widget>
           </item>
@@ -189,6 +189,20 @@
             </property>
            </widget>
           </item>
+          <item row="0" column="6">
+           <widget class="QPushButton" name="exportPointsButton">
+            <property name="text">
+             <string>Export Points</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="6">
+           <widget class="QPushButton" name="importPointsButton">
+            <property name="text">
+             <string>Import Points</string>
+            </property>
+           </widget>
+          </item>
          </layout>
         </item>
         <item>
@@ -246,9 +260,9 @@
          </widget>
         </item>
         <item>
-         <widget class="QProgressBar" name="invKinProgressBar">
-          <property name="value">
-           <number>0</number>
+         <widget class="QLabel" name="resultPathLabel">
+          <property name="text">
+           <string/>
           </property>
          </widget>
         </item>
