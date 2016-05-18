@@ -1,6 +1,5 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "QMessageBox"
 
 MainWindow::MainWindow(QWidget *parent) :
     QWidget(parent),
@@ -15,7 +14,6 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->consoleOutput->setTextColor(*defaultConsoleColor);
     resultFilePath = new QString(QApplication::applicationDirPath()+"/results");
 
-
     connect(ui->addPointButton, SIGNAL(released()), this, SLOT(addPoint()));
     connect(ui->exportPointsButton, SIGNAL(released()), this, SLOT(exportPoints()));
     connect(ui->importPointsButton, SIGNAL(released()), this, SLOT(importPoints()));
@@ -27,6 +25,8 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(process, SIGNAL(readyReadStandardOutput()), this, SLOT(updateOutputStd()));
     connect(process, SIGNAL(started()), this, SLOT(processStarted()));
     connect(process, SIGNAL(finished(int,QProcess::ExitStatus)), this, SLOT(processFinished(int, QProcess::ExitStatus)));
+
+    connect(ui->simulateButton, SIGNAL(released()), this, SLOT(launchSimulation()));
 }
 
 void MainWindow::launch()
@@ -211,12 +211,12 @@ void MainWindow::updateWidgetsEnableCalculate()
 
 void MainWindow::calculateInverseKinematic()
 {
+    ui->calculateLabel->setText("Calculating...");
     vector< vector<double> > outputAngles;
     outputAngles.resize(ui->pointList->rowCount(), vector<double>(5, 0));
     double x3, z3, c3, s3;
     ofstream f;
     f.open(resultFilePath->toStdString().c_str());
-    ui->resultPathLabel->setText("Saved in "+*resultFilePath);
     for (int i=0; i<ui->pointList->rowCount(); i++)
     {
         // theta 1
@@ -262,6 +262,7 @@ void MainWindow::calculateInverseKinematic()
         }
     }
     f.close();
+    ui->calculateLabel->setText("Angles generated");
     // reset the window when finished
     isCalculating = false;
     updateWidgetsEnableCalculate();
@@ -275,6 +276,11 @@ double MainWindow::getPointValue(int point, int coordinate)
 double MainWindow::degToRad(double degreeAngle)
 {
     return (PI*degreeAngle)/180.0;
+}
+
+void MainWindow::launchSimulation()
+{
+    ui->simWidget->launchSimulation(ui->pointList);
 }
 
 MainWindow::~MainWindow()

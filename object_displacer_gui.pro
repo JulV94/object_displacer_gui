@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += core gui opengl
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -13,12 +13,18 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        mainwindow.cpp
+        mainwindow.cpp \
+    glsimulator.cpp \
+    matrix.cpp
 
 HEADERS  += mainwindow.h \
-    constants.h
+    constants.h \
+    glsimulator.h \
+    matrix.h
 
 FORMS    += mainwindow.ui
 
 OTHER_FILES += \
     stylesheet.css
+
+LIBS += -lglut -lGLU

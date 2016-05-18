@@ -34,14 +34,15 @@ private slots:
     void processStarted();
     void processFinished(int exitCode, QProcess::ExitStatus exitStatus);
     void processInverseKinematicRequest();
+    void launchSimulation();
 
 private:
+    Ui::MainWindow *ui;
     void updateWidgetsEnableLaunch();
     void updateWidgetsEnableCalculate();
     void calculateInverseKinematic();
     double getPointValue(int point, int coordinate);
     double degToRad(double degreeAngle);
-    Ui::MainWindow *ui;
     QProcess *process;
     bool isLaunched;
     bool isCalculating;
