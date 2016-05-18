@@ -280,7 +280,7 @@ double MainWindow::degToRad(double degreeAngle)
 
 void MainWindow::launchSimulation()
 {
-    ui->simWidget->launchSimulation(ui->pointList);
+    ui->simWidget->launchSimulation(*resultFilePath);
 }
 
 MainWindow::~MainWindow()

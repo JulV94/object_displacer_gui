@@ -23,15 +23,15 @@ public:
     void resizeGL(int w, int h);
 
 public slots:
-    void launchSimulation(QTableWidget *tableWidget);
+    void launchSimulation(QString filename);
 
 private:
     void calculateDirectKinematic();
-    vector< vector<double> > pointList;
-    vector<Matrix> directKin;
+    vector< vector<double> > invKin;
+    vector<Matrix> points;
     QTimer timer;
     unsigned int counter;
-
+    bool isSimulating;
 };
 
 #endif // GLSIMULATOR_H
