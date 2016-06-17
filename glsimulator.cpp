@@ -8,6 +8,7 @@ GLSimulator::GLSimulator(QWidget *parent) :
     isSimulating = false;
 }
 
+// Initialize OpenGL environement (lighting, materials, depth test, etc)
 void GLSimulator::initializeGL()
 {
     glClearColor(0,0,0,1);
@@ -17,11 +18,12 @@ void GLSimulator::initializeGL()
     glEnable(GL_COLOR_MATERIAL);
 }
 
+// Paint the scene
 void GLSimulator::paintGL()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    // ground
+    // Draw ground
     glColor3f(0.5, 0.5, 0.5);
     glBegin(GL_TRIANGLES);
     glVertex3f(-SIM_WALL_SIZE, SIM_WALL_SIZE, 0.0);
@@ -34,6 +36,7 @@ void GLSimulator::paintGL()
     glVertex3f(SIM_WALL_SIZE,-SIM_WALL_SIZE,0.0);
     glEnd();
 
+    // Draw lines for the joints at positions given by direct kinematic
     if (isSimulating && counter < invKin.size())
     {
 
@@ -70,6 +73,7 @@ void GLSimulator::paintGL()
 
         counter++;
     }
+    // No simulation running
     else
     {
         timer.stop();
@@ -78,6 +82,7 @@ void GLSimulator::paintGL()
     }
 }
 
+// Adapt the scene when window is resized
 void GLSimulator::resizeGL(int w, int h)
 {
     glViewport(0, 0, w, h);
@@ -89,6 +94,7 @@ void GLSimulator::resizeGL(int w, int h)
     gluLookAt(-3,-5,2.5, 0,0,0, 0,0,1);
 }
 
+// Simulation requested, loading of inverse kinematic and calculation of the direct kinematic
 void GLSimulator::launchSimulation(QString filename)
 {
     string value;
@@ -97,19 +103,24 @@ void GLSimulator::launchSimulation(QString filename)
     while (!f.eof())
     {
         vector<double> currentPoint;
+        // Push back angles of the robot
         for (int i=0; i<5; i++)
         {
             f >> value;
             currentPoint.push_back(atof(value.c_str()));
         }
+        // Add new position of the robot
         invKin.push_back(currentPoint);
     }
     f.close();
+    // Calculate direct kinematic
     calculateDirectKinematic();
+    // Launch the simulation
     isSimulating = true;
     timer.start(1000);
 }
 
+// Calculate the direct kinematic
 void GLSimulator::calculateDirectKinematic()
 {
     Matrix T(4);
@@ -120,6 +131,7 @@ void GLSimulator::calculateDirectKinematic()
     Matrix T4(4);
     Matrix T5(4);
 
+    // For each position of the robot, calculate the T matrices of each joints to find positions of them
     for (unsigned int i=0; i<invKin.size(); i++)
     {
         T1.setValue(cos(invKin[i][0]),0,0);
@@ -224,6 +236,7 @@ void GLSimulator::calculateDirectKinematic()
         result.setValue(T.value(1, 3),4,1);
         result.setValue(T.value(2, 3),4,2);
 
+        // Add positions of the joints in the space (with respect to the base frame)
         points.push_back(result);
     }
 }

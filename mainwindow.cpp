@@ -1,10 +1,12 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+// Initialize the window
 MainWindow::MainWindow(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::MainWindow)
 {
+    // Initialize components and variables
     ui->setupUi(this);
     process = new QProcess();
     isLaunched = false;
@@ -14,6 +16,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->consoleOutput->setTextColor(*defaultConsoleColor);
     resultFilePath = new QString(QApplication::applicationDirPath()+"/results");
 
+    // Connect components with each other
     connect(ui->addPointButton, SIGNAL(released()), this, SLOT(addPoint()));
     connect(ui->exportPointsButton, SIGNAL(released()), this, SLOT(exportPoints()));
     connect(ui->importPointsButton, SIGNAL(released()), this, SLOT(importPoints()));
@@ -29,14 +32,17 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->simulateButton, SIGNAL(released()), this, SLOT(launchSimulation()));
 }
 
+// Launch the ros program
 void MainWindow::launch()
 {
+    // If the program is running, terminate it
     if (isLaunched)
     {
         process->terminate();
         isLaunched=false;
         updateWidgetsEnableLaunch();
     }
+    // Else launch it
     else
     {
         isLaunched=true;
@@ -45,6 +51,7 @@ void MainWindow::launch()
     }
 }
 
+// Add a point in the tableWidget component
 void MainWindow::addPoint()
 {
     const int currentRow = ui->pointList->rowCount();
@@ -56,6 +63,7 @@ void MainWindow::addPoint()
     ui->pointList->setItem(currentRow, 4, new QTableWidgetItem(ui->phiSpinBox->text()));
 }
 
+// Export points of the tableWidget to a file
 void MainWindow::exportPoints()
 {
     QString filename;
@@ -80,6 +88,7 @@ void MainWindow::exportPoints()
     f.close();
 }
 
+// Import points form file to tableWidget
 void MainWindow::importPoints()
 {
     QString filename;
@@ -105,6 +114,7 @@ void MainWindow::importPoints()
     }
 }
 
+// Display errors incoming from ros program into the console component od the window
 void MainWindow::updateOutputError()
 {
     ui->consoleOutput->setTextColor(*errorConsoleColor);
@@ -112,16 +122,19 @@ void MainWindow::updateOutputError()
     ui->consoleOutput->setTextColor(*defaultConsoleColor);
 }
 
+// Display standard messages incoming from ros program into the console component of the window
 void MainWindow::updateOutputStd()
 {
     ui->consoleOutput->append(QString(process->readAllStandardOutput()));
 }
 
+// Trigger from the start of the ros program
 void MainWindow::processStarted()
 {
     ui->consoleOutput->append("Command launched");
 }
 
+// Trigger of the end of the ros program (display status of the execution)
 void MainWindow::processFinished(int exitCode, QProcess::ExitStatus exitStatus)
 {
     if (exitStatus == QProcess::CrashExit)
@@ -137,6 +150,7 @@ void MainWindow::processFinished(int exitCode, QProcess::ExitStatus exitStatus)
     updateWidgetsEnableLaunch();
 }
 
+// Enable or disable components when ros program is running
 void MainWindow::updateWidgetsEnableLaunch()
 {
     ui->addPointButton->setEnabled(!isLaunched);
@@ -165,6 +179,7 @@ void MainWindow::updateWidgetsEnableLaunch()
     }
 }
 
+// Send a request to calculate the inverse kinematic of the given points (points of tableWidget)
 void MainWindow::processInverseKinematicRequest()
 {
     if (isCalculating)
@@ -181,6 +196,7 @@ void MainWindow::processInverseKinematicRequest()
     }
 }
 
+// Enable or disable components when calculating inverse kinematic
 void MainWindow::updateWidgetsEnableCalculate()
 {
     ui->addPointButton->setEnabled(!isCalculating);
@@ -209,6 +225,7 @@ void MainWindow::updateWidgetsEnableCalculate()
     }
 }
 
+// Calculate the inverse kinematic
 void MainWindow::calculateInverseKinematic()
 {
     ui->calculateLabel->setText("Calculating...");
@@ -217,6 +234,7 @@ void MainWindow::calculateInverseKinematic()
     double x3, z3, c3, s3;
     ofstream f;
     f.open(resultFilePath->toStdString().c_str());
+    // For each position, calculate the angles required by each joint to achieve the given position
     for (int i=0; i<ui->pointList->rowCount(); i++)
     {
         // theta 1
@@ -245,9 +263,9 @@ void MainWindow::calculateInverseKinematic()
             outputAngles[i][j]= -outputAngles[i][j];
         }
 
-
+        // Show result in console component
         ui->consoleOutput->append(QString::number(outputAngles[i][0])+" "+QString::number(outputAngles[i][1])+" "+QString::number(outputAngles[i][2])+" "+QString::number(outputAngles[i][3])+" "+QString::number(outputAngles[i][4])+" ");
-        // copy to file
+        // copy the result to file
         for (int j=0; j<4; j++)
         {
             f << outputAngles[i][j] << " ";
@@ -268,21 +286,25 @@ void MainWindow::calculateInverseKinematic()
     updateWidgetsEnableCalculate();
 }
 
+// Get value of a cell in the tableWidget
 double MainWindow::getPointValue(int point, int coordinate)
 {
     return ui->pointList->item(point, coordinate)->text().toDouble();
 }
 
+// Convert degree to radiant
 double MainWindow::degToRad(double degreeAngle)
 {
     return (PI*degreeAngle)/180.0;
 }
 
+// Request a simulation
 void MainWindow::launchSimulation()
 {
     ui->simWidget->launchSimulation(*resultFilePath);
 }
 
+// Destructor of the object
 MainWindow::~MainWindow()
 {
     delete ui;

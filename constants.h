@@ -9,6 +9,7 @@
 
 #define ELBOW_DIR       -1
 #define OFFSET          0.033
+// offset of the joints
 #define THETA1_OFFSET   169
 #define THETA2_OFFSET   65
 #define THETA3_OFFSET   -146+90
@@ -16,6 +17,7 @@
 
 #define PI              3.14159265
 
+// Simulation constants
 #define SIM_ZOOM_FACTOR 5
 #define SIM_WALL_SIZE   5.0
 
